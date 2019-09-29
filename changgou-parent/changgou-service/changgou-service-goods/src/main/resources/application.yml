@@ -1,0 +1,45 @@
+server:
+  port: 18081
+spring:
+  application:
+    name: goods
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.211.132:3306/changgou_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 123456
+  cloud:
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+  instance:
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.ismyself.goods.dao
+
+
+#hystrix 配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000
+          strategy: SEMAPHORE
+
+#connection-timeout:服务连接超时时间
+#socket-connect：HTTP请求超时时间
+#timeoutInMilliseconds：feign连接超时时间
+#cluster-name：Elasticsearch的集群节点名称，这里需要和Elasticsearch集群节点名称保持一致
+#cluster-nodes：Elasticsearch节点通信地址
